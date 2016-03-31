@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.util.*;
 public class DomJ extends JFrame
 {
-        private TextArea editor;
+        private JTextArea editor;
         private Button run;
         private Button compile;
         private Button save;
@@ -11,30 +12,53 @@ public class DomJ extends JFrame
         private File currentFile;
         private File configFile;
         private Scanner conf;
-        public DomJ()
+        public DomJ(String fileName)
         {
                super("DomJ, the best IDE");
-               editor = new TextArea();
                try
                {
-                       workingDirectory = new Paths(System.getProperty("user.dir"));
-                       configFile = new File(workindDirectory.getAbsolutePath() + "conf");
+                       workingDirectory = new File(System.getProperty("user.dir"));
+                       configFile = new File(workingDirectory.getAbsolutePath() + "conf");
                        conf = new Scanner(configFile);
-                       currentFile = new File(conf.nextLine());
-                       save = new Button(new DomJButtons(0, editor));
+                       currentFile = new File(fileName);
+                       save = new Button("Save");
+                       save.addActionListener(new DomJButtons(0, editor));
+                       editor = new JTextArea();
+                       add(save);
+                       add(editor);
+                       
                }
-               catch(FileNotFoundExeption e)
+               catch(FileNotFoundException e)
                {
-                       System.err.println("ERROR: " e);
+                       e.printStackTrace();
+                       System.err.println("The file was not found");
                }
                
         }
         
         public static void main(String[] args)
         {
-                new DomJ();
+                if (args.length > 0)
+                {
+                        if (args[0].charAt(0) == '-')
+                        {
+                                for (char cur : args[0].toCharArray())
+                                        switch (cur)
+                                        {
+                                        case '-':
+                                                break;
+                                        case 'h':
+                                                System.out.println("Usage:\nDomJ [-h] fileName");
+                                                break;
+                                        }
+                                if (args.length > 1)
+                                        new DomJ(args[0]);
+                        }
+                        else
+                                new DomJ(args[0]);
+                }
+                else
+                        System.out.println("-h or for usage");
         }
-        
 }
-
 
