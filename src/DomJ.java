@@ -46,6 +46,9 @@ public class DomJ extends JFrame
                 compile = new Button("Compile");
                 compile.addActionListener(new Compile(fileName, editor));
                 menu.add(compile);
+                //run = new Button("Run");
+                //run.addActionListener(new Run(fileName, editor));
+                //menu.add(run);
                 add(editor, BorderLayout.CENTER);
                 pack();
                 setVisible(true);
