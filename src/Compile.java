@@ -15,6 +15,7 @@ public class Compile implements ActionListener
         }
         public void actionPerformed(ActionEvent e)
         {
+                new Save(new File(fileName), editor);
                 try
                 {
                         Scanner in = new Scanner(fileName);
