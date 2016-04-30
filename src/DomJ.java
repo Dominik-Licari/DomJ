@@ -9,6 +9,7 @@ public class DomJ extends JFrame
         private Button run;
         private Button compile;
         private Button save;
+        private Button open;
         private File workingDirectory;
         private File currentFile;
         private File configFile;
@@ -49,13 +50,42 @@ public class DomJ extends JFrame
                 //run = new Button("Run");
                 //run.addActionListener(new Run(fileName, editor));
                 //menu.add(run);
+                open = new Button("Open");
+                open.addActionListener(new ActionListener()
+                {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                                JFrame p = new JFrame();
+                                JTextField prompt = new JTextField();
+                                p.setPreferredSize(new Dimension(100,70));
+                                p.add(prompt);
+                                p.pack();
+                                p.setVisible(true);
+                                prompt.addKeyListener(new KeyAdapter()
+                                {
+                                        public void keyPressed(KeyEvent e)
+                                        {
+                                                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                                                {
+                                                        new Save(currentFile, editor);
+                                                        remake(prompt.getText());
+                                                        p.dispose();
+                                                }
+                                        }
+                                });
+                        }
+                        
+                });
+                menu.add(open);
+                
                 add(editor, BorderLayout.CENTER);
                 pack();
                 setVisible(true);
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-               
         }
         
+
+        private static DomJ dj;
         public static void main(String[] args)
         {
                 if (args.length > 0)
@@ -74,13 +104,19 @@ public class DomJ extends JFrame
                                                 break;
                                         }
                                 if (args.length > 1)
-                                        new DomJ(args[0]);
+                                        dj = new DomJ(args[0]);
                         }
                         else
-                                new DomJ(args[0]);
+                                dj = new DomJ(args[0]);
                 }
                 else
                         System.out.println("-h for usage");
         }
+        public static void remake(String fileName)
+        {
+                dj.dispose();
+                dj = new DomJ(fileName);
+        }
+                
 }
 
