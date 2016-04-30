@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.awt.event.*;
 public class DomJ extends JFrame
 {
         private JTextArea editor;
@@ -14,25 +15,41 @@ public class DomJ extends JFrame
         private Scanner conf;
         public DomJ(String fileName)
         {
-               super("DomJ, the best IDE");
-               try
-               {
-                       workingDirectory = new File(System.getProperty("user.dir"));
-                       configFile = new File(workingDirectory.getAbsolutePath() + "conf");
-                       conf = new Scanner(configFile);
-                       currentFile = new File(fileName);
-                       save = new Button("Save");
-                       save.addActionListener(new DomJButtons(0, editor));
-                       editor = new JTextArea();
-                       add(save);
-                       add(editor);
+                super("DomJ, the best IDE");
+                setLayout(new BorderLayout());
+                JPanel menu = new JPanel(new FlowLayout());
+                add(menu, BorderLayout.NORTH);
+                workingDirectory = new File(System.getProperty("user.dir"));
+                //configFile = new File(workingDirectory.getAbsolutePath() + "/conf");
+                //conf = new Scanner(configFile);
+                currentFile = new File(fileName);
+                editor = new JTextArea(5, 20);
+                JScrollPane sp = new JScrollPane(editor);
+                try 
+                {
+                        Scanner in = new Scanner(currentFile);
+                        StringBuilder text = new StringBuilder();
+                        while (in.hasNextLine())
+                        {
+                                text.append(in.nextLine());
+                                text.append("\n");
+                        }
+                        editor.append(text.toString());
                        
-               }
-               catch(FileNotFoundException e)
-               {
-                       e.printStackTrace();
-                       System.err.println("The file was not found");
-               }
+                }
+                catch (FileNotFoundException e)
+                {
+                }
+                save = new Button("Save");
+                save.addActionListener(new Save(currentFile, editor));
+                menu.add(save);
+                compile = new Button("Compile");
+                compile.addActionListener(new Compile(fileName, editor));
+                menu.add(compile);
+                add(editor, BorderLayout.CENTER);
+                pack();
+                setVisible(true);
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
                
         }
         
