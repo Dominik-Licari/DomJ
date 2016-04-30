@@ -70,6 +70,8 @@ public class DomJ extends JFrame
                                         case 'h':
                                                 System.out.println("Usage:\nDomJ [-h] fileName");
                                                 break;
+                                        default:
+                                                break;
                                         }
                                 if (args.length > 1)
                                         new DomJ(args[0]);
@@ -78,7 +80,7 @@ public class DomJ extends JFrame
                                 new DomJ(args[0]);
                 }
                 else
-                        System.out.println("-h or for usage");
+                        System.out.println("-h for usage");
         }
 }
 
