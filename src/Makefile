@@ -5,6 +5,6 @@ build:
 	$(MK) *.java
 
 clean: 
-	rm -r $(TG)/*
+	rm -r $(TG)/*.class
 
 rebuild: clean build
