@@ -24,7 +24,7 @@ public class SaveAs implements ActionListener
                         {
                                 if (e.getKeyCode() == KeyEvent.VK_ENTER)
                                 {
-                                        new Save(new File(prompt.getText()), editor).actionPerformed(ev);
+                                        new Save(new File(prompt.getText()), editor)/*I'm dumb and forgot that ->*/.actionPerformed(ev);
                                         System.out.println(prompt.getText());
                                         p.dispose();
                                 }
