@@ -10,7 +10,7 @@ public class SaveAs implements ActionListener
         {
                 editor= e;
         }
-        public void actionPerformed(ActionEvent e)
+        public void actionPerformed(ActionEvent ev)
         {
                 JFrame p = new JFrame();
                 JTextField prompt = new JTextField();
@@ -24,7 +24,7 @@ public class SaveAs implements ActionListener
                         {
                                 if (e.getKeyCode() == KeyEvent.VK_ENTER)
                                 {
-                                        new Save(new File(prompt.getText()), editor);
+                                        new Save(new File(prompt.getText()), editor).actionPerformed(ev);
                                         System.out.println(prompt.getText());
                                         p.dispose();
                                 }
