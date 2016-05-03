@@ -9,6 +9,7 @@ public class DomJ extends JFrame
         private Button run;
         private Button compile;
         private Button save;
+        private Button saveAs;
         private Button open;
         private File workingDirectory;
         private File currentFile;
@@ -50,6 +51,9 @@ public class DomJ extends JFrame
                 //run = new Button("Run");
                 //run.addActionListener(new Run(fileName, editor));
                 //menu.add(run);
+                saveAs = new Button("SaveAs");
+                saveAs.addActionListener(new SaveAs(editor));
+                menu.add(saveAs);
                 open = new Button("Open");
                 open.addActionListener(new ActionListener()
                 {
@@ -77,7 +81,6 @@ public class DomJ extends JFrame
                         
                 });
                 menu.add(open);
-                
                 add(editor, BorderLayout.CENTER);
                 pack();
                 setVisible(true);
