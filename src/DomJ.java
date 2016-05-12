@@ -5,12 +5,11 @@ import java.util.*;
 import java.awt.event.*;
 public class DomJ extends JFrame
 {
+        private JMenuBar menuBar;
+        private JMenu file;
+        private JMenuItem save, saveAs, open, run, compile;
+
         private JTextArea editor;
-        private Button run;
-        private Button compile;
-        private Button save;
-        private Button saveAs;
-        private Button open;
         private File workingDirectory;
         private File currentFile;
         private File configFile;
@@ -19,11 +18,7 @@ public class DomJ extends JFrame
         {
                 super("DomJ, the best IDE");
                 setLayout(new BorderLayout());
-                JPanel menu = new JPanel(new FlowLayout());
-                add(menu, BorderLayout.NORTH);
                 workingDirectory = new File(System.getProperty("user.dir"));
-                //configFile = new File(workingDirectory.getAbsolutePath() + "/conf");
-                //conf = new Scanner(configFile);
                 currentFile = new File(fileName);
                 editor = new JTextArea(5, 20);
                 JScrollPane sp = new JScrollPane(editor);
@@ -42,19 +37,16 @@ public class DomJ extends JFrame
                 catch (FileNotFoundException e)
                 {
                 }
-                save = new Button("Save");
+                menuBar = new JMenuBar();
+                file = new JMenu("File");
+                menuBar.add(file);
+                save = new JMenuItem("Save");
                 save.addActionListener(new Save(currentFile, editor));
-                menu.add(save);
-                compile = new Button("Compile");
-                compile.addActionListener(new Compile(fileName, editor));
-                menu.add(compile);
-                //run = new Button("Run");
-                //run.addActionListener(new Run(fileName, editor));
-                //menu.add(run);
-                saveAs = new Button("SaveAs");
+                file.add(save);
+                saveAs = new JMenuItem("SaveAs");
                 saveAs.addActionListener(new SaveAs(editor));
-                menu.add(saveAs);
-                open = new Button("Open");
+                file.add(saveAs);
+                open = new JMenuItem("Open");
                 open.addActionListener(new ActionListener()
                 {
                         public void actionPerformed(ActionEvent e)
@@ -80,7 +72,14 @@ public class DomJ extends JFrame
                         }
                         
                 });
-                menu.add(open);
+                file.add(open);
+                compile = new JMenuItem("Compile");
+                compile.addActionListener(new Compile(fileName, editor));
+                menuBar.add(compile);
+                //run = new JMenuItem("Run");
+                //run.addActionListener(new Run(fileName, editor));
+                //menuBar.add(run);
+                setJMenuBar(menuBar);
                 add(editor, BorderLayout.CENTER);
                 pack();
                 setVisible(true);
