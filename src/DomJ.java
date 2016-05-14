@@ -8,7 +8,6 @@ public class DomJ extends JFrame
         private JMenuBar menuBar;
         private JMenu file;
         private JMenuItem save, saveAs, open, run, compile;
-
         private JTextArea editor;
         private File workingDirectory;
         private File currentFile;
@@ -20,7 +19,7 @@ public class DomJ extends JFrame
                 setLayout(new BorderLayout());
                 workingDirectory = new File(System.getProperty("user.dir"));
                 currentFile = new File(fileName);
-                editor = new JTextArea(5, 20);
+                editor = new JTextArea(5, 200);
                 JScrollPane sp = new JScrollPane(editor);
                 try 
                 {
@@ -74,7 +73,7 @@ public class DomJ extends JFrame
                 });
                 file.add(open);
                 compile = new JMenuItem("Compile");
-                compile.addActionListener(new Compile(fileName, editor));
+                compile.addActionListener(new CompileJava(fileName, editor));
                 menuBar.add(compile);
                 //run = new JMenuItem("Run");
                 //run.addActionListener(new Run(fileName, editor));

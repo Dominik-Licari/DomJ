@@ -15,7 +15,6 @@ public class Run implements ActionListener
         }
         public void actionPerformed(ActionEvent e)
         {
-                new Compile(fileName, editor);
                 try
                 {
                         Process p = new ProcessBuilder("gnome-terminal", "-x", "java", fileName.replace(".java", "")).start();
