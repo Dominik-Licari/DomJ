@@ -3,12 +3,15 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.awt.event.*;
+import org.fife.ui.rtextarea.*;
+import org.fife.ui.rsyntaxtextarea.*;
+
 public class DomJ extends JFrame
 {
         private JMenuBar menuBar;
         private JMenu file;
         private JMenuItem save, saveAs, open, run, compile;
-        private JTextArea editor;
+        private RSyntaxTextArea editor;
         private File workingDirectory;
         private File currentFile;
         private File configFile;
@@ -19,8 +22,10 @@ public class DomJ extends JFrame
                 setLayout(new BorderLayout());
                 workingDirectory = new File(System.getProperty("user.dir"));
                 currentFile = new File(fileName);
-                editor = new JTextArea(5, 200);
-                JScrollPane sp = new JScrollPane(editor);
+                editor = new RSyntaxTextArea(20, 60);
+                editor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+                editor.setCodeFoldingEnabled(true);
+                RTextScrollPane sp = new RTextScrollPane(editor);
                 try 
                 {
                         Scanner in = new Scanner(currentFile);

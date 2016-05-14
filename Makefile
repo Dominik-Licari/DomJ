@@ -1,10 +1,9 @@
-CC = javac -d
-TG = out
-MK = $(CC) $(TG)
+CC = javac -classpath lib/rsyntaxarea.jar -d
+
 build: 
-	$(MK) src/*.java
+	$(CC) out src/*.java
 
 clean: 
-	rm -r $(TG)/*.class
+	rm -r out/*.class
 
 rebuild: clean build
