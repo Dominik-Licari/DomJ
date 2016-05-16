@@ -1,3 +1,4 @@
+package DomJ;
 import java.awt.event.*;
 public interface Compile
 {

@@ -1,3 +1,4 @@
+package DomJ;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -80,9 +81,9 @@ public class DomJ extends JFrame
                 compile = new JMenuItem("Compile");
                 compile.addActionListener(new CompileJava(fileName, editor));
                 menuBar.add(compile);
-                //run = new JMenuItem("Run");
-                //run.addActionListener(new Run(fileName, editor));
-                //menuBar.add(run);
+                run = new JMenuItem("Run");
+                run.addActionListener(new Run(fileName, editor));
+                menuBar.add(run);
                 setJMenuBar(menuBar);
                 add(editor, BorderLayout.CENTER);
                 pack();
