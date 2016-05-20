@@ -14,12 +14,22 @@ public class CompileJava implements Compile, ActionListener
                 fileName = fn;
                 editor= e;
         }
+        public CompileJava(String fn, String e)
+        {
+                fileName = fn;
+                editor = new JTextArea(e);
+        }
         public void actionPerformed(ActionEvent e)
         {
-                new Save(new File(fileName), editor);
+                new Save(new File(fileName), editor).actionPerformed(e);
                 try
                 {
-                        Scanner in = new Scanner(fileName);
+                        Scanner in = new Scanner(new File(fileName));
+                        while (in.hasNextLine())
+                        {
+                                System.out.println(in.nextLine());
+                        }
+                                              
                         JavaCompiler comp = ToolProvider.getSystemJavaCompiler();
                         DiagnosticCollector<JavaFileObject> diag = new DiagnosticCollector<JavaFileObject>();
                         StandardJavaFileManager fm = comp.getStandardFileManager(diag, null, null);
@@ -27,6 +37,10 @@ public class CompileJava implements Compile, ActionListener
                         JavaCompiler.CompilationTask task = comp.getTask(null, fm, diag, null, null, compU);
                         task.call();
                         fm.close();
+                        if (checkSuccess())
+                                System.out.println("^ happily compiles");
+                        else
+                                System.out.println("^ refuses to compile");
                 }
                 catch (FileNotFoundException ex)
                 {
@@ -38,5 +52,10 @@ public class CompileJava implements Compile, ActionListener
                 }
                 
                 
+        }
+        
+        public boolean checkSuccess()
+        {
+                return new File(fileName.replace("java", "class")).exists();
         }
 }

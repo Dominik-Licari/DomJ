@@ -4,6 +4,6 @@ build:
 	$(CC) out src/DomJ/*.java
 
 clean: 
-	rm -r out/*.class
+	rm -r out/DomJ/*.class
 
 rebuild: clean build
