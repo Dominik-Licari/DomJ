@@ -20,42 +20,63 @@ public class Run implements ActionListener
         public void actionPerformed(ActionEvent e)
         {
                 new CompileJava(fileName, editor).actionPerformed(e);
-                
-                char[] alph ="abcdefghijklmnopqrstuvwxyz".toCharArray(); 
-                StringBuilder rand = new StringBuilder();
-                for (int i = 0; i < 8; i++)
+                try
                 {
-                        rand.append(alph[(int)(Math.random() * alph.length)]);
+                        String fN = fileName.replace(".java", "").replace("/", ".");
+                        Class classy = new Reloader().loadClass(fN).newInstance().getClass();
+                        Method methodical = classy.getMethod("main", String[].class);
+                        String[] args = null;
+                        methodical.invoke(null, (Object) args);
                 }
-                
-                String fileNameRun =  "Tmp/" + rand.toString() + ".java";
-                
-                Scanner text = new Scanner(editor.getText());
-                text.nextLine();text.nextLine();
-                StringBuilder code = new StringBuilder();
-                code.append("package Tmp;\npublic class " + rand.toString() + ";\n");
-                while (text.hasNextLine())
-                        code.append(text.nextLine() + "\n");
-                
-                CompileJava cJ = new CompileJava(fileNameRun, code.toString());
-                cJ.actionPerformed(e);
-                
-
-
-                if (cJ.checkSuccess())
-                        try
-                        {
-                                String fN = fileNameRun.replace(".java", "").replace("/", ".");
-                                Class classy = Class.forName(fN);
-                                Method methodical = classy.getMethod("main", String[].class);
-                                String[] args = null;
-                                methodical.invoke(null, (Object) args);
-                        }
-                        catch (Exception ex)
-                        {
-                                ex.printStackTrace();
-                        }
+                catch (Exception ex)
+                {
+                        ex.printStackTrace();
+                }
                 
                 
         }
+        
+        private class Reloader extends ClassLoader
+        {
+                @Override 
+                public Class<?> loadClass(String s)
+                {
+                        return findClass(s);
+                }
+
+                @Override
+                public Class<?> findClass(String s)
+                {
+                        try
+                        {
+                                byte[] bytes = loadClassData(s);
+                                return defineClass(s, bytes, 0, bytes.length);
+                        }
+                        catch (IOException ioe)
+                        {
+                                try 
+                                {
+                                        return super.loadClass(s);
+                                }
+                                catch (ClassNotFoundException cnfe)
+                                {}
+                                ioe.printStackTrace();
+                                return null;
+                        }
+                }
+                
+                private byte[] loadClassData(String className) throws IOException
+                {
+                        File f = new File("" + className.replaceAll("\\.", "/") + ".class");
+                        int size = (int) f.length();
+                        byte[] buff = new byte[size];
+                        FileInputStream fis = new FileInputStream(f);
+                        DataInputStream dis = new DataInputStream(fis);
+                        dis.readFully(buff);
+                        dis.close();
+                        return buff;
+                }
+                
+        }
+        
 }
