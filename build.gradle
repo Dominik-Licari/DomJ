@@ -1,0 +1,23 @@
+apply plugin: 'application'
+
+mainClassName = "DomJ.DomJ"
+
+repositories
+{
+        mavenCentral()
+}
+
+dependencies 
+{
+        compile group: 'com.fifesoft', name: 'rsyntaxtextarea' , version: '2.5.8'
+}
+
+sourceCompatibility = 1.8
+version = 1.0
+jar 
+{
+        manifest
+        {
+                attributes 'Implementation-Title': 'DomJ', 'Impementation-Version': version
+        }
+}
