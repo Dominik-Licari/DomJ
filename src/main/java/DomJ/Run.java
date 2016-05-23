@@ -67,7 +67,11 @@ public class Run implements ActionListener
                 
                 private byte[] loadClassData(String className) throws IOException
                 {
-                        File f = new File("" + className.replaceAll("\\.", "/") + ".class");
+                        File f = null;
+                        if (System.getProperty("os.name").startsWith("Windows"))
+                                f = new File("" + className.replaceAll("\\.", "\\") + ".class");
+                        else
+                                f = new File("" + className.replaceAll("\\.", "/") + ".class");
                         int size = (int) f.length();
                         byte[] buff = new byte[size];
                         FileInputStream fis = new FileInputStream(f);

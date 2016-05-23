@@ -21,3 +21,4 @@ jar
                 attributes 'Implementation-Title': 'DomJ', 'Impementation-Version': version
         }
 }
+
