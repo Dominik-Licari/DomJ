@@ -11,26 +11,55 @@ public class Run implements ActionListener
 {
         private String fileName;
         private JTextArea editor;
+        private Lang lang;
         
-        public Run(String fn, JTextArea e)
+        public Run(String fn, JTextArea e, Lang l)
         {
                 fileName = fn;
                 editor= e;
+                lang = l;
         }
         public void actionPerformed(ActionEvent e)
         {
-                new CompileJava(fileName, editor).actionPerformed(e);
-                try
+                switch (lang)
                 {
-                        String fN = fileName.replace(".java", "").replace("/", ".");
-                        Class classy = new Reloader().loadClass(fN).newInstance().getClass();
-                        Method methodical = classy.getMethod("main", String[].class);
-                        String[] args = null;
-                        methodical.invoke(null, (Object) args);
-                }
-                catch (Exception ex)
-                {
-                        ex.printStackTrace();
+                case ASM:
+                        new CompileAssembly(fileName, editor).actionPerformed(e);
+                        try
+                        {
+                                Process p = Runtime.getRuntime().exec(fileName.replace(".S", ""));
+                                p.waitFor();
+                                BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                                BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                                String line = "";
+                                while ((line = in.readLine()) != null)
+                                {
+                                System.out.println(line);
+                                }
+                                while ((line = err.readLine()) != null)
+                                {
+                                        System.out.println(line);
+                                }
+                        }
+                        catch (Exception ex)
+                        {
+                                ex.printStackTrace();
+                        }
+                        break;
+                default:
+                        new CompileJava(fileName, editor).actionPerformed(e);
+                        try
+                        {
+                                String fN = fileName.replace(".java", "").replace("/", ".");
+                                Class classy = new Reloader().loadClass(fN).newInstance().getClass();
+                                Method methodical = classy.getMethod("main", String[].class);
+                                String[] args = null;
+                                methodical.invoke(null, (Object) args);
+                        }
+                        catch (Exception ex)
+                        {
+                                ex.printStackTrace();
+                        }
                 }
                 
                 

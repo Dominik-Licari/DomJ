@@ -19,12 +19,31 @@ public class DomJ extends JFrame
         private Scanner conf;
         public DomJ(String fileName)
         {
+                this(fileName, Lang.JAVA);
+        }
+        public DomJ(String fileName, Lang lang)
+        {
                 super("DomJ, the best IDE");
                 setLayout(new BorderLayout());
                 workingDirectory = new File(System.getProperty("user.dir"));
                 currentFile = new File(fileName);
                 editor = new RSyntaxTextArea(20, 60);
-                editor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+                switch (lang)
+                {
+                case ASM: 
+                        editor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_ASSEMBLER_X86);
+                        break;
+                case FORTH: 
+                        editor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
+                        break;
+                case LISP: 
+                        editor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
+                        break;
+                default:
+                        editor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+                }
+                        
+                
                 editor.setCodeFoldingEnabled(true);
                 RTextScrollPane sp = new RTextScrollPane(editor);
                 try 
@@ -69,7 +88,7 @@ public class DomJ extends JFrame
                                                 if (e.getKeyCode() == KeyEvent.VK_ENTER)
                                                 {
                                                         new Save(currentFile, editor);
-                                                        remake(prompt.getText());
+                                                        remake(prompt.getText(), lang);
                                                         p.dispose();
                                                 }
                                         }
@@ -79,10 +98,24 @@ public class DomJ extends JFrame
                 });
                 file.add(open);
                 compile = new JMenuItem("Compile");
-                compile.addActionListener(new CompileJava(fileName, editor));
+                switch (lang)
+                {
+                case ASM: 
+                        compile.addActionListener(new CompileAssembly(fileName, editor));
+                        break;
+                //case FORTH:
+                  //      compile.addActionListener(new CompileJava(fileName, editor));
+                    //    break;
+                //case LISP:
+                  //      compile.addActionListener(new CompileJava(fileName, editor));
+                    //    break;
+                default: 
+                        compile.addActionListener(new CompileJava(fileName, editor));
+                }
+                
                 menuBar.add(compile);
                 run = new JMenuItem("Run");
-                run.addActionListener(new Run(fileName, editor));
+                run.addActionListener(new Run(fileName, editor, lang));
                 menuBar.add(run);
                 setJMenuBar(menuBar);
                 add(editor, BorderLayout.CENTER);
@@ -95,6 +128,7 @@ public class DomJ extends JFrame
         private static DomJ dj;
         public static void main(String[] args)
         {
+                Lang lang = null;
                 if (args.length > 0)
                 {
                         if (args[0].charAt(0) == '-')
@@ -105,13 +139,18 @@ public class DomJ extends JFrame
                                         case '-':
                                                 break;
                                         case 'h':
-                                                System.out.println("Usage:\nDomJ [-h] fileName");
+                                                System.out.println("Usage:\nDomJ [-h] [-l language] fileName");
                                                 break;
+                                        case 'l':
+                                                lang = Lang.fromString(args[1]);
                                         default:
                                                 break;
                                         }
-                                if (args.length > 1)
-                                        dj = new DomJ(args[0]);
+
+                                if (args.length > 1 && lang == null)
+                                        dj = new DomJ(args[1]);
+                                else if (args.length > 2 && lang != null)
+                                        dj = new DomJ(args[2], lang);
                         }
                         else
                                 dj = new DomJ(args[0]);
@@ -121,9 +160,12 @@ public class DomJ extends JFrame
         }
         public static void remake(String fileName)
         {
-                dj.dispose();
-                dj = new DomJ(fileName);
+                remake(fileName, Lang.JAVA);
         }
-                
+        public static void remake(String fileName, Lang lang)
+        {
+                dj.dispose();
+                dj = new DomJ(fileName, lang);
+        }       
 }
 
