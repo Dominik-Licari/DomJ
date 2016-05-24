@@ -114,7 +114,8 @@ public class DomJ extends JFrame
                 }
                 
                 menuBar.add(compile);
-                run = new JMenuItem("Run");
+                if (!System.getProperty("os.name").startsWith("Windows"))
+                        run = new JMenuItem("Run");
                 run.addActionListener(new Run(fileName, editor, lang));
                 menuBar.add(run);
                 setJMenuBar(menuBar);
@@ -142,9 +143,9 @@ public class DomJ extends JFrame
                                                 System.out.println("Usage:\nDomJ [-h] [-l language] fileName");
                                                 break;
                                         case 'l':
-                                                if (! System.getProperty("os.name").startsWith("Linux"))
+                                                if (System.getProperty("os.name").startsWith("Windows"))
                                                 {
-                                                        System.out.println("We are sorry to inform you that non-Java\nlanguages are not supported for non-Linux systems at this time.");
+                                                        System.out.println("We are sorry to inform you that non-Java\nlanguages are not supported for Windows  systems at this time.");
                                                         System.exit(-1);
                                                 }
                                                 lang = Lang.fromString(args[1]);

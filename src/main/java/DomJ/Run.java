@@ -27,7 +27,7 @@ public class Run implements ActionListener
                         new CompileAssembly(fileName, editor).actionPerformed(e);
                         try
                         {
-                                Process p = Runtime.getRuntime().exec(fileName.replace(".S", ""));
+                                Process p = Runtime.getRuntime().exec(fileName.replace(".asm", ""));
                                 p.waitFor();
                                 BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
                                 BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()));
