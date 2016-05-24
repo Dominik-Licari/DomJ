@@ -106,9 +106,9 @@ public class DomJ extends JFrame
                 case FORTH:
                         compile.addActionListener(new CompileForth(fileName, editor));
                         break;
-                //case LISP:
-                  //      compile.addActionListener(new CompileLisp(fileName, editor));
-                    //    break;
+                case LISP:
+                        compile.addActionListener(new CompileLisp(fileName, editor));
+                        break;
                 default: 
                         compile.addActionListener(new CompileJava(fileName, editor));
                 }

@@ -69,6 +69,29 @@ public class Run implements ActionListener
                                 ex.printStackTrace();
                         }
                         break;
+                case LISP:
+                        new CompileLisp(fileName, editor).actionPerformed(e);
+                        try
+                        {
+                                Process p = Runtime.getRuntime().exec("sbcl --script " + fileName);
+                                p.waitFor();
+                                BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                                BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                                String line = "";
+                                while ((line = in.readLine()) != null)
+                                {
+                                System.out.println(line);
+                                }
+                                while ((line = err.readLine()) != null)
+                                {
+                                        System.out.println(line);
+                                }
+                        }
+                        catch (Exception ex)
+                        {
+                                ex.printStackTrace();
+                        }
+                        break;
                 default:
                         new CompileJava(fileName, editor).actionPerformed(e);
                         try
