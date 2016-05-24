@@ -103,11 +103,11 @@ public class DomJ extends JFrame
                 case ASM: 
                         compile.addActionListener(new CompileAssembly(fileName, editor));
                         break;
-                //case FORTH:
-                  //      compile.addActionListener(new CompileJava(fileName, editor));
-                    //    break;
+                case FORTH:
+                        compile.addActionListener(new CompileForth(fileName, editor));
+                        break;
                 //case LISP:
-                  //      compile.addActionListener(new CompileJava(fileName, editor));
+                  //      compile.addActionListener(new CompileLisp(fileName, editor));
                     //    break;
                 default: 
                         compile.addActionListener(new CompileJava(fileName, editor));
@@ -142,6 +142,11 @@ public class DomJ extends JFrame
                                                 System.out.println("Usage:\nDomJ [-h] [-l language] fileName");
                                                 break;
                                         case 'l':
+                                                if (! System.getProperty("os.name").startsWith("Linux"))
+                                                {
+                                                        System.out.println("We are sorry to inform you that non-Java\nlanguages are not supported for non-Linux systems at this time.");
+                                                        System.exit(-1);
+                                                }
                                                 lang = Lang.fromString(args[1]);
                                         default:
                                                 break;

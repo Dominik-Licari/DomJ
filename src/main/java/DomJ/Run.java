@@ -34,6 +34,29 @@ public class Run implements ActionListener
                                 String line = "";
                                 while ((line = in.readLine()) != null)
                                 {
+                                        System.out.println(line);
+                                }
+                                while ((line = err.readLine()) != null)
+                                {
+                                        System.out.println(line);
+                                }
+                        }
+                        catch (Exception ex)
+                        {
+                                ex.printStackTrace();
+                        }
+                        break;
+                case FORTH:
+                        new CompileForth(fileName, editor).actionPerformed(e);
+                        try
+                        {
+                                Process p = Runtime.getRuntime().exec("jonesforth " + fileName);
+                                p.waitFor();
+                                BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                                BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                                String line = "";
+                                while ((line = in.readLine()) != null)
+                                {
                                 System.out.println(line);
                                 }
                                 while ((line = err.readLine()) != null)
